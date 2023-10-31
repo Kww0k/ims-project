@@ -1,85 +1,41 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import {reactive} from "vue";
+
+const loginForm = reactive({
+  username: '',
+  password: ''
+})
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div class="login-main">
+    <div style="width: 450px; height: 300px; background-color: rgba(255, 255, 255, 0.7); border-radius: 8px;">
+      <div style="width: 100%; font-size: 40px; height: 80px;  display: flex;justify-content: center;font-weight: bold;align-items: center;">
+        登录
+      </div>
+      <div style="height: 60px;display: flex;justify-content: center;align-items: center;">
+        <el-input v-model="loginForm.username" style="width: 300px" placeholder="用户名"/>
+      </div>
+      <div style="height: 60px;display: flex;justify-content: center;align-items: center;">
+        <el-input v-model="loginForm.password" style="width: 300px" placeholder="密码" type="password"/>
+      </div>
+      <div style="height: 100px;display: flex;justify-content: center;align-items: center;">
+        <el-button plain type="success" style="width: 300px">登录</el-button>
+      </div>
     </div>
-  </header>
-
-  <RouterView />
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
+.login-main {
   width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+  height: 100vh;
+  background-image: url('@/assets/login-bg.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
