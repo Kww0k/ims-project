@@ -12,6 +12,7 @@ import static com.example.imsbackend.constants.HttpStatus.*;
 public enum HttpMessage {
 
     SUCCESS(HTTP_STATUS_200, "操作成功"),
+    USERNAME_PASSWORD_EXCEPTION(HTTP_STATUS_401, "用户名或密码错误"),
     SYSTEM_ERROR(HTTP_STATUS_500, "未知错误");
 
     final Integer code;

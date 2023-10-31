@@ -23,6 +23,8 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice {
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         if (body instanceof ResultBean)
             return body;
-        return ResultBean.success(body).toJsonString();
+        if (body instanceof String)
+            return ResultBean.success(body).toJsonString();
+        return ResultBean.success(body);
     }
 }

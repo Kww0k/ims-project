@@ -14,6 +14,10 @@ public record ResultBean<T>(Integer code, String message, T data) {
         return new ResultBean<>(HttpMessage.SUCCESS.getCode(), HttpMessage.SUCCESS.getMessage(), data);
     }
 
+    public static <T> ResultBean<T> failure(Integer code, String message) {
+        return new ResultBean<>(code, message, null);
+    }
+
     public static <T> ResultBean<T> failure(HttpMessage httpMessage) {
         return new ResultBean<>(httpMessage.getCode(), httpMessage.getMessage(), null);
     }

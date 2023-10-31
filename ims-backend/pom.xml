@@ -16,6 +16,7 @@
     <properties>
         <java.version>17</java.version>
         <fastjson.version>2.0.27</fastjson.version>
+        <mp.version>3.5.3.2</mp.version>
     </properties>
     <dependencies>
         <dependency>
@@ -26,6 +27,15 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>${fastjson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mp.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

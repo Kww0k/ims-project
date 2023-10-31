@@ -16,6 +16,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public ResultBean<Void> exceptionHandler(Exception e) {
+        if (e instanceof GlobalException exception)
+            return ResultBean.failure(exception.getCode(), exception.getMessage());
         return ResultBean.failure(HttpMessage.SYSTEM_ERROR);
     }
 }
