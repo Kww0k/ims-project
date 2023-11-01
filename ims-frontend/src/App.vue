@@ -1,10 +1,17 @@
 <script setup>
 import {reactive} from "vue";
+import request from "@/utils/request";
 
 const loginForm = reactive({
   username: '',
   password: ''
 })
+
+const login = () => {
+  request.post("/login", loginForm).then(res => {
+    console.log(res)
+  })
+}
 </script>
 
 <template>
@@ -20,7 +27,7 @@ const loginForm = reactive({
         <el-input v-model="loginForm.password" style="width: 300px" placeholder="密码" type="password"/>
       </div>
       <div style="height: 100px;display: flex;justify-content: center;align-items: center;">
-        <el-button plain type="success" style="width: 300px">登录</el-button>
+        <el-button plain type="success" style="width: 300px" @click="login">登录</el-button>
       </div>
     </div>
   </div>
