@@ -1,4 +1,4 @@
-package com.example.imsbackend.domain.vo.requset;
+package com.example.imsbackend.domain.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

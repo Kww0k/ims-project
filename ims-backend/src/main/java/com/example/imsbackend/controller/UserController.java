@@ -1,6 +1,9 @@
 package com.example.imsbackend.controller;
 
+import com.example.imsbackend.domain.dto.InsertUserDTO;
+import com.example.imsbackend.domain.dto.UpdateUserDTO;
 import com.example.imsbackend.domain.entity.User;
+import com.example.imsbackend.domain.vo.AuthUserInfoVO;
 import com.example.imsbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,23 +22,23 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/listUser")
-    public List<User> listUser() {
+    public List<AuthUserInfoVO> listUser() {
         return userService.listUser();
     }
 
     @GetMapping("/getUserById/{id}")
-    public User getUserById(@PathVariable Integer id) {
+    public AuthUserInfoVO getUserById(@PathVariable Integer id) {
         return userService.getUserById(id);
     }
 
     @PostMapping("/insertUser")
-    public Boolean insertUser(@RequestBody User user) {
-        return userService.insertUser(user);
+    public Boolean insertUser(@RequestBody InsertUserDTO insertUserDTO) {
+        return userService.insertUser(insertUserDTO);
     }
 
     @PostMapping("/updateUserById")
-    public Boolean updateUserById(@RequestBody User user) {
-        return userService.updateUserById(user);
+    public Boolean updateUserById(@RequestBody UpdateUserDTO updateUserDTO) {
+        return userService.updateUserById(updateUserDTO);
     }
 
     @DeleteMapping("/deleteUserById/{id}")

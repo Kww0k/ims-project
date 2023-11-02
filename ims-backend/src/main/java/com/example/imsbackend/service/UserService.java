@@ -1,7 +1,10 @@
 package com.example.imsbackend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.imsbackend.domain.dto.InsertUserDTO;
+import com.example.imsbackend.domain.dto.UpdateUserDTO;
 import com.example.imsbackend.domain.entity.User;
+import com.example.imsbackend.domain.vo.AuthUserInfoVO;
 
 import java.util.List;
 
@@ -14,13 +17,13 @@ import java.util.List;
  */
 public interface UserService extends IService<User> {
 
-    List<User> listUser();
+    List<AuthUserInfoVO> listUser();
 
-    User getUserById(Integer id);
+    AuthUserInfoVO getUserById(Integer id);
 
-    Boolean insertUser(User user);
+    Boolean insertUser(InsertUserDTO insertUserDTO);
 
-    Boolean updateUserById(User user);
+    Boolean updateUserById(UpdateUserDTO updateUserDTO);
 
     Boolean deleteUserById(Integer id);
 }

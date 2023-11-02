@@ -1,25 +1,19 @@
-package com.example.imsbackend.domain.entity;
+package com.example.imsbackend.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.util.Date;
 
 /**
  * @author Silvery
- * @since 2023/10/31 16:57
+ * @since 2023/11/2 19:41
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Accessors(chain = true)
-@TableName("user")
-public class User  {
-    @TableId
+public class UpdateUserDTO {
     private Integer id;
 
     private String username;
@@ -31,11 +25,4 @@ public class User  {
     private String sex;
     private Date enterTime;
     private Date finishTime;
-
-    private Date createTime;
-    private Integer createBy;
-    private Date updateTime;
-    private Integer updateBy;
-    private String delFlag;
-
 }

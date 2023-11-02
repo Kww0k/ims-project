@@ -2,10 +2,11 @@ package com.example.imsbackend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.imsbackend.domain.entity.User;
-import com.example.imsbackend.domain.vo.requset.LoginVO;
-import com.example.imsbackend.domain.vo.response.AuthUserInfoVO;
+import com.example.imsbackend.domain.vo.LoginVO;
+import com.example.imsbackend.domain.vo.AuthUserInfoVO;
 import com.example.imsbackend.handler.exception.UsernamePasswordException;
 import com.example.imsbackend.mapper.UserMapper;
+import com.example.imsbackend.mapper.struct.BeanCopyUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,6 @@ public class TestController {
         User dbUser = userMapper.selectOne(wrapper);
         if (dbUser == null || !Objects.equals(dbUser.getPassword(), loginVO.getPassword()))
             throw new UsernamePasswordException();
-        return new AuthUserInfoVO(dbUser.getId(), dbUser.getUsername());
+        return BeanCopyUtil.INSTANCE.toAuthUserInfo(dbUser);
     }
 }
