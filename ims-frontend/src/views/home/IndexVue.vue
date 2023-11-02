@@ -18,7 +18,7 @@ import router from "@/router";
               default-active="2"
               class="el-menu-vertical-demo"
           >
-            <el-menu-item>
+            <el-menu-item index="0">
               <template #title>
                 <el-icon>
                   <House/>
@@ -45,8 +45,8 @@ import router from "@/router";
                 </el-icon>
                 <span>教师管理</span>
               </template>
-              <el-menu-item index="1-1">教师信息</el-menu-item>
-              <el-menu-item index="1-2">教师课表</el-menu-item>
+              <el-menu-item index="2-1">教师信息</el-menu-item>
+              <el-menu-item index="2-2">教师课表</el-menu-item>
             </el-sub-menu>
             <el-sub-menu index="3">
               <template #title>
@@ -55,9 +55,9 @@ import router from "@/router";
                 </el-icon>
                 <span>考试管理</span>
               </template>
-              <el-menu-item index="1-1">考试信息</el-menu-item>
-              <el-menu-item index="1-2">考试学生</el-menu-item>
-              <el-menu-item index="1-3">监考老师</el-menu-item>
+              <el-menu-item index="3-1">考试信息</el-menu-item>
+              <el-menu-item index="3-2">考试学生</el-menu-item>
+              <el-menu-item index="3-3">监考老师</el-menu-item>
             </el-sub-menu>
             <el-sub-menu index="4">
               <template #title>
@@ -66,9 +66,9 @@ import router from "@/router";
                 </el-icon>
                 <span>课程管理</span>
               </template>
-              <el-menu-item index="1-1">课程信息</el-menu-item>
-              <el-menu-item index="1-2">任课老师</el-menu-item>
-              <el-menu-item index="1-3">选课情况</el-menu-item>
+              <el-menu-item index="4-1">课程信息</el-menu-item>
+              <el-menu-item index="4-2">任课老师</el-menu-item>
+              <el-menu-item index="4-3">选课情况</el-menu-item>
             </el-sub-menu>
           </el-menu>
         </el-scrollbar>
@@ -77,7 +77,7 @@ import router from "@/router";
         <el-header style="height: 55px; border-bottom: 1px solid #ccc">
           <div style="width: 100%; text-align: right;">
             <el-dropdown>
-              <el-avatar style="width: 35px; height: 35px"
+              <el-avatar style="width: 35px; height: 35px; margin-top: 10px"
                          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
               />
               <template #dropdown>

@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.util.Date;
 
 /**
  * @author Silvery
@@ -13,13 +16,27 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 @TableName("user")
-public class User {
-
+public class User  {
     @TableId
-    Integer id;
+    private Integer id;
 
-    String username;
+    private String username;
+    private String password;
+    private String address;
+    private String code;
+    private String identificationCard;
+    private Date birthday;
+    private String sex;
+    private Date enterTime;
+    private Date finishTime;
+    private Date createTime;
+    private Integer createBy;
+    private Date updateTime;
+    private Integer updateBy;
+    private String delFlag;
 
-    String password;
+
+
 }
