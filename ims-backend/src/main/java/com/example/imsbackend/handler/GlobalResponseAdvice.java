@@ -1,6 +1,7 @@
 package com.example.imsbackend.handler;
 
 import com.example.imsbackend.domain.ResultBean;
+import com.example.imsbackend.enums.HttpMessage;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -21,6 +22,9 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+        if (body instanceof Boolean flag)
+            if (!flag)
+                return ResultBean.failure(HttpMessage.SYSTEM_ERROR);
         if (body instanceof ResultBean)
             return body;
         if (body instanceof String)

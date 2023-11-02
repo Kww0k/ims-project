@@ -3,9 +3,7 @@ package com.example.imsbackend.controller;
 import com.example.imsbackend.domain.entity.User;
 import com.example.imsbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +20,26 @@ public class UserController {
 
     @GetMapping("/listUser")
     public List<User> listUser() {
-        return userService.list();
+        return userService.listUser();
+    }
+
+    @GetMapping("/getUserById/{id}")
+    public User getUserById(@PathVariable Integer id) {
+        return userService.getUserById(id);
+    }
+
+    @PostMapping("/insertUser")
+    public Boolean insertUser(@RequestBody User user) {
+        return userService.insertUser(user);
+    }
+
+    @PostMapping("/updateUserById")
+    public Boolean updateUserById(@RequestBody User user) {
+        return userService.updateUserById(user);
+    }
+
+    @DeleteMapping("/deleteUserById/{id}")
+    public Boolean deleteUserById(@PathVariable Integer id) {
+        return userService.deleteUserById(id);
     }
 }
