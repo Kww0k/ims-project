@@ -2,7 +2,6 @@ package com.example.imsbackend.controller;
 
 import com.example.imsbackend.domain.dto.InsertUserDTO;
 import com.example.imsbackend.domain.dto.UpdateUserDTO;
-import com.example.imsbackend.domain.entity.User;
 import com.example.imsbackend.domain.vo.AuthUserInfoVO;
 import com.example.imsbackend.service.UserService;
 import jakarta.validation.Valid;
@@ -25,8 +24,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/listUser")
-    public List<AuthUserInfoVO> listUser() {
-        return userService.listUser();
+    public List<AuthUserInfoVO> listUser(String username, String address) {
+        return userService.listUser(username, address);
     }
 
     @GetMapping("/getUserById/{id}")

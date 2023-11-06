@@ -1,5 +1,6 @@
 package com.example.imsbackend.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.imsbackend.domain.dto.InsertUserDTO;
 import com.example.imsbackend.domain.dto.UpdateUserDTO;
@@ -10,6 +11,7 @@ import com.example.imsbackend.service.UserService;
 import com.example.imsbackend.utils.BeanCopyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -26,8 +28,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private final BeanCopyUtils beanCopyUtils;
 
     @Override
-    public List<AuthUserInfoVO> listUser() {
-        return baseMapper.selectList(null)
+    public List<AuthUserInfoVO> listUser(String username, String address) {
+        LambdaQueryWrapper<User> like = new LambdaQueryWrapper<User>()
+                .like(StringUtils.hasText(username), User::getUsername, username)
+                .like(StringUtils.hasText(address), User::getAddress, address);
+        return baseMapper.selectList(like)
                 .stream()
                 .map(user -> beanCopyUtils.copyBean(user, AuthUserInfoVO.class))
                 .toList();

@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface UserService extends IService<User> {
 
-    List<AuthUserInfoVO> listUser();
+    List<AuthUserInfoVO> listUser(String username, String address);
 
     AuthUserInfoVO getUserById(Integer id);
 
