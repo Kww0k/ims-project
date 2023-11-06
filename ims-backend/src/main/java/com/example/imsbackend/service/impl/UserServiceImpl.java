@@ -6,8 +6,9 @@ import com.example.imsbackend.domain.dto.UpdateUserDTO;
 import com.example.imsbackend.domain.entity.User;
 import com.example.imsbackend.domain.vo.AuthUserInfoVO;
 import com.example.imsbackend.mapper.UserMapper;
-import com.example.imsbackend.mapper.struct.BeanCopyUtil;
 import com.example.imsbackend.service.UserService;
+import com.example.imsbackend.utils.BeanCopyUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,30 +20,33 @@ import java.util.List;
  * @since 2023-11-02 18:44:48
  */
 @Service("userService")
+@RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
+    private final BeanCopyUtils beanCopyUtils;
 
     @Override
     public List<AuthUserInfoVO> listUser() {
         return baseMapper.selectList(null)
                 .stream()
-                .map(BeanCopyUtil.INSTANCE::toAuthUserInfo)
+                .map(user -> beanCopyUtils.copyBean(user, AuthUserInfoVO.class))
                 .toList();
     }
 
     @Override
     public AuthUserInfoVO getUserById(Integer id) {
-        return BeanCopyUtil.INSTANCE.toAuthUserInfo(baseMapper.selectById(id));
+        return beanCopyUtils.copyBean(baseMapper.selectById(id), AuthUserInfoVO.class);
     }
 
     @Override
     public Boolean insertUser(InsertUserDTO insertUserDTO) {
-        User user = BeanCopyUtil.INSTANCE.toUser(insertUserDTO);
+        User user = beanCopyUtils.copyBean(insertUserDTO, User.class);
         return baseMapper.insert(user) == 1;
     }
 
     @Override
     public Boolean updateUserById(UpdateUserDTO updateUserDTO) {
-        User user = BeanCopyUtil.INSTANCE.toUser(updateUserDTO);
+        User user = beanCopyUtils.copyBean(updateUserDTO, User.class);
         return baseMapper.updateById(user) == 1;
     }
 

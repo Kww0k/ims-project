@@ -15,10 +15,10 @@ import router from "@/router";
         </div>
         <el-scrollbar class="menu" style="width: 100%; height: calc(100vh - 55px)">
           <el-menu
-              default-active="2"
+              default-active="0"
               class="el-menu-vertical-demo"
           >
-            <el-menu-item index="0">
+            <el-menu-item index="0" @click="router.push('/')">
               <template #title>
                 <el-icon>
                   <House/>
@@ -33,7 +33,7 @@ import router from "@/router";
                 </el-icon>
                 <span>学生管理</span>
               </template>
-              <el-menu-item index="1-1">学生信息</el-menu-item>
+              <el-menu-item index="1-1" @click="router.push('/user-info')">学生信息</el-menu-item>
               <el-menu-item index="1-2">学生选课</el-menu-item>
               <el-menu-item index="1-3">学生成绩</el-menu-item>
               <el-menu-item index="1-4">学生课表</el-menu-item>

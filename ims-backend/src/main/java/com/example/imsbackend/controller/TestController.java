@@ -6,7 +6,7 @@ import com.example.imsbackend.domain.vo.LoginVO;
 import com.example.imsbackend.domain.vo.AuthUserInfoVO;
 import com.example.imsbackend.handler.exception.UsernamePasswordException;
 import com.example.imsbackend.mapper.UserMapper;
-import com.example.imsbackend.mapper.struct.BeanCopyUtil;
+import com.example.imsbackend.utils.BeanCopyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +24,8 @@ public class TestController {
 
     private final UserMapper userMapper;
 
+    private final BeanCopyUtils beanCopyUtils;
+
     @PostMapping("/login")
     public AuthUserInfoVO login(@RequestBody LoginVO loginVO) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
@@ -31,6 +33,6 @@ public class TestController {
         User dbUser = userMapper.selectOne(wrapper);
         if (dbUser == null || !Objects.equals(dbUser.getPassword(), loginVO.getPassword()))
             throw new UsernamePasswordException();
-        return BeanCopyUtil.INSTANCE.toAuthUserInfo(dbUser);
+        return beanCopyUtils.copyBean(dbUser, AuthUserInfoVO.class);
     }
 }
