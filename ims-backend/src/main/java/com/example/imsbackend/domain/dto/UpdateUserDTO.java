@@ -1,8 +1,10 @@
 package com.example.imsbackend.domain.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Date;
 
@@ -14,8 +16,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUserDTO {
+    @NotNull(message = "id不能为空")
     private Integer id;
-
     private String username;
     private String password;
     private String address;
