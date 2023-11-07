@@ -5,6 +5,7 @@ import com.example.imsbackend.domain.dto.InsertUserDTO;
 import com.example.imsbackend.domain.dto.UpdateUserDTO;
 import com.example.imsbackend.domain.entity.User;
 import com.example.imsbackend.domain.vo.AuthUserInfoVO;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * @author Silvery
  * @since 2023-11-02 18:44:46
  */
-public interface UserService extends IService<User> {
+public interface UserService extends IService<User>, UserDetailsService {
 
     List<AuthUserInfoVO> listUser(String username, String address);
 

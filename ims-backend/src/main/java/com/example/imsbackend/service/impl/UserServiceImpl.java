@@ -2,14 +2,18 @@ package com.example.imsbackend.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.imsbackend.domain.LoginUser;
 import com.example.imsbackend.domain.dto.InsertUserDTO;
 import com.example.imsbackend.domain.dto.UpdateUserDTO;
 import com.example.imsbackend.domain.entity.User;
 import com.example.imsbackend.domain.vo.AuthUserInfoVO;
+import com.example.imsbackend.handler.exception.UsernamePasswordException;
 import com.example.imsbackend.mapper.UserMapper;
 import com.example.imsbackend.service.UserService;
 import com.example.imsbackend.utils.BeanCopyUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -58,5 +62,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Boolean deleteUserById(Integer id) {
         return baseMapper.deleteById(id) == 1;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = baseMapper.selectOne(new LambdaQueryWrapper<User>()
+                .eq(User::getUsername, username)
+                .or()
+                .eq(User::getCode, username));
+        if (user == null)
+            throw new UsernamePasswordException();
+        return new LoginUser(user);
     }
 }

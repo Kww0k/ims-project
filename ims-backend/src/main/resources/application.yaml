@@ -8,6 +8,9 @@ spring:
     url: jdbc:mysql://192.168.233.150:3306/ims?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
+  data:
+    redis:
+      host: 192.168.233.150
 mybatis-plus:
   global-config:
     db-config:
