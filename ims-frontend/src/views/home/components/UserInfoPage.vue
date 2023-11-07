@@ -5,10 +5,86 @@ import request from "@/utils/request";
 import {ElMessage} from "element-plus";
 
 const userList = ref([])
+const addUserDialog = ref(false)
+const updateUserDialog = ref(false)
+const ruleForm = ref()
 const selectForm = reactive({
   username: '',
   address: ''
 })
+const addUserForm = reactive({
+  username: '',
+  password: '',
+  address: '',
+  code: '',
+  identificationCard: '',
+  birthday: '',
+  sex: '',
+  enterTime: '',
+  finishTime: ''
+})
+const updateUserForm = reactive({
+  id: '',
+  username: '',
+  password: '',
+  address: '',
+  code: '',
+  identificationCard: '',
+  birthday: '',
+  sex: '',
+  enterTime: '',
+  finishTime: ''
+})
+
+const rules = reactive({
+  username: [
+    {required: true, message: '请输入用户名', trigger: 'blur'},
+    {min: 3, max: 30, message: '用户名的长度必须在3-30之间', trigger: 'blur'},
+  ],
+  password: [
+    {required: true, message: '请输入密码', trigger: 'blur'},
+    {min: 6, max: 18, message: '密码的长度必须在6-18之间', trigger: 'blur'},
+  ],
+  address: [
+    {required: true, message: '请输入用户地址', trigger: 'blur'}
+  ],
+  code: [
+    {required: true, message: '请输入身份码', trigger: 'blur'}
+  ],
+  identificationCard: [
+    {required: true, message: '请输入身份证', trigger: 'blur'},
+    {min: 18, max: 18, message: '身份证的长度必须是18位', trigger: 'blur'},
+  ],
+  sex: [
+    {required: true, message: '请选择性别', trigger: 'blur'}
+  ],
+  birthday: [
+    {required: true, message: '请选择生日', trigger: 'blur'}
+  ],
+  enterTime: [
+    {required: true, message: '请选择入学时间', trigger: 'blur'}
+  ],
+  finishTime: [
+    {required: false, message: '请选择离开时间', trigger: 'blur'},
+  ]
+})
+
+const closeAddDialog = () => {
+  addUserDialog.value = false
+  addUserForm.username = ''
+  addUserForm.password = ''
+  addUserForm.address = ''
+  addUserForm.code = ''
+  addUserForm.identificationCard = ''
+  addUserForm.birthday = ''
+  addUserForm.sex = ''
+  addUserForm.enterTime = ''
+  addUserForm.finishTime = ''
+}
+
+const closeUpdateDialog = () => {
+  updateUserDialog.value = false
+}
 
 const getList = () => {
   request.get('/user/listUser?username=' + selectForm.username + '&address=' + selectForm.address).then(res => {
@@ -24,6 +100,24 @@ const reset = () => {
   selectForm.address = ''
   getList()
 }
+
+const submitForm = async (formEl) => {
+  if (!formEl) return
+  await formEl.validate((valid) => {
+    if (valid) {
+      request.post('/user/insertUser', addUserForm).then(res => {
+        if (res.code === 200) {
+          ElMessage.success("新增成功")
+          closeAddDialog()
+          reset()
+        }
+      })
+    } else {
+      ElMessage.error("请检查填入的信息是否合法")
+    }
+  })
+}
+
 
 const removeUser = (id) => {
   request.delete('/user/deleteUserById/' + id).then(res => {
@@ -62,7 +156,7 @@ onMounted(() => {
           </el-icon>
           重置
         </el-button>
-        <el-button type="primary" plain>
+        <el-button type="primary" plain @click="addUserDialog = true">
           <el-icon style="margin-right: 3px">
             <Plus/>
           </el-icon>
@@ -81,7 +175,8 @@ onMounted(() => {
         <el-table-column label="操作">
           <template v-slot="scope">
             <el-button type="info" plain>修改</el-button>
-            <el-popconfirm confirm-button-text="确认" cancel-button-text="取消" title="你确定要删除这个用户吗?" @confirm="removeUser(scope.row.id)">
+            <el-popconfirm confirm-button-text="确认" cancel-button-text="取消" title="你确定要删除这个用户吗?"
+                           @confirm="removeUser(scope.row.id)">
               <template #reference>
                 <el-button type="danger" plain>删除</el-button>
               </template>
@@ -92,6 +187,82 @@ onMounted(() => {
     </el-scrollbar>
 
   </div>
+
+  <el-dialog
+      v-model="addUserDialog"
+      width="30%"
+      title="新增用户信息"
+      :before-close="closeAddDialog"
+  >
+    <div style="margin-right: 20%">
+      <el-form :model="addUserForm" label-width="120" :rules="rules" ref="ruleForm">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="addUserForm.username"/>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="addUserForm.password"  type="password"/>
+        </el-form-item>
+        <el-form-item label="地址" prop="address">
+          <el-input v-model="addUserForm.address"/>
+        </el-form-item>
+        <el-form-item label="身份码" prop="code">
+          <el-input v-model="addUserForm.code"/>
+        </el-form-item>
+        <el-form-item label="身份证" prop="identificationCard">
+          <el-input v-model="addUserForm.identificationCard"/>
+        </el-form-item>
+        <el-form-item label="生日" prop="birthday">
+          <el-date-picker
+              v-model="addUserForm.birthday"
+              type="date"
+              placeholder="请选择用户的生日"
+          />
+        </el-form-item>
+        <el-form-item label="性别" prop="sex">
+          <el-radio-group v-model="addUserForm.sex">
+            <el-radio label="男">男</el-radio>
+            <el-radio label="女">女</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="入学时间" prop="enterTime">
+          <el-date-picker
+              v-model="addUserForm.enterTime"
+              type="date"
+              placeholder="请选择入学的时间"
+          />
+        </el-form-item>
+        <el-form-item label="结束时间" prop="finishTime">
+          <el-date-picker
+              v-model="addUserForm.finishTime"
+              type="date"
+              placeholder="请选择离开学校的时间"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="closeAddDialog">取消</el-button>
+          <el-button type="primary" @click="submitForm(ruleForm)">
+            确认
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </el-dialog>
+
+  <el-dialog
+      v-model="updateUserDialog"
+      width="30%"
+      title="更新用户信息"
+      :before-close="closeUpdateDialog"
+  >
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="closeUpdateDialog">取消</el-button>
+        <el-button type="primary" @click="">
+          确认
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped>
