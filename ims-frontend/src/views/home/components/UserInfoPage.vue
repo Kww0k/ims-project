@@ -26,7 +26,6 @@ const addUserForm = reactive({
 const updateUserForm = reactive({
   id: '',
   username: '',
-  password: '',
   address: '',
   code: '',
   identificationCard: '',
@@ -65,7 +64,7 @@ const rules = reactive({
     {required: true, message: '请选择入学时间', trigger: 'blur'}
   ],
   finishTime: [
-    {required: false, message: '请选择离开时间', trigger: 'blur'},
+    {required: true, message: '请选择离开时间', trigger: 'blur'},
   ]
 })
 
@@ -84,6 +83,15 @@ const closeAddDialog = () => {
 
 const closeUpdateDialog = () => {
   updateUserDialog.value = false
+  updateUserForm.id = ''
+  updateUserForm.username = ''
+  addUserForm.address = ''
+  addUserForm.code = ''
+  addUserForm.identificationCard = ''
+  addUserForm.birthday = ''
+  addUserForm.sex = ''
+  addUserForm.enterTime = ''
+  addUserForm.finishTime = ''
 }
 
 const getList = () => {
@@ -126,6 +134,37 @@ const removeUser = (id) => {
       reset()
     } else
       ElMessage.error(res.message)
+  })
+}
+
+const openUpdateDialog = (row) => {
+  console.log(row)
+  updateUserForm.id = row.id
+  updateUserForm.username = row.username
+  updateUserForm.address = row.address
+  updateUserForm.code = row.code
+  updateUserForm.identificationCard = row.identificationCard
+  updateUserForm.birthday = row.birthday
+  updateUserForm.sex = row.sex
+  updateUserForm.enterTime = row.enterTime
+  updateUserForm.finishTime = row.finishTime
+  updateUserDialog.value = true
+}
+
+const updateForm = async (formEl) => {
+  if (!formEl) return
+  await formEl.validate((valid) => {
+    if (valid) {
+      request.post('/user/updateUserById', updateUserForm).then(res => {
+        if (res.code === 200) {
+          ElMessage.success("更新成功")
+          closeUpdateDialog()
+          reset()
+        }
+      })
+    } else {
+      ElMessage.error("请检查填入的信息是否合法")
+    }
   })
 }
 
@@ -172,9 +211,12 @@ onMounted(() => {
         <el-table-column prop="code" label="身份码"/>
         <el-table-column prop="sex" label="性别"/>
         <el-table-column prop="birthday" label="生日"/>
-        <el-table-column label="操作">
+        <el-table-column prop="identificationCard" label="身份证"/>
+        <el-table-column prop="enterTime" label="入学时间"/>
+        <el-table-column prop="finishTime" label="离开时间"/>
+        <el-table-column label="操作" width="160">
           <template v-slot="scope">
-            <el-button type="info" plain>修改</el-button>
+            <el-button type="info" plain @click="openUpdateDialog(scope.row)">修改</el-button>
             <el-popconfirm confirm-button-text="确认" cancel-button-text="取消" title="你确定要删除这个用户吗?"
                            @confirm="removeUser(scope.row.id)">
               <template #reference>
@@ -254,14 +296,55 @@ onMounted(() => {
       title="更新用户信息"
       :before-close="closeUpdateDialog"
   >
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="closeUpdateDialog">取消</el-button>
-        <el-button type="primary" @click="">
-          确认
-        </el-button>
-      </span>
-    </template>
+    <div style="margin-right: 20%">
+      <el-form :model="updateUserForm" label-width="120" :rules="rules" ref="ruleForm">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="updateUserForm.username"/>
+        </el-form-item>
+        <el-form-item label="地址" prop="address">
+          <el-input v-model="updateUserForm.address"/>
+        </el-form-item>
+        <el-form-item label="身份码" prop="code">
+          <el-input v-model="updateUserForm.code"/>
+        </el-form-item>
+        <el-form-item label="身份证" prop="identificationCard">
+          <el-input v-model="updateUserForm.identificationCard"/>
+        </el-form-item>
+        <el-form-item label="生日" prop="birthday">
+          <el-date-picker
+              v-model="updateUserForm.birthday"
+              type="date"
+              placeholder="请选择用户的生日"
+          />
+        </el-form-item>
+        <el-form-item label="性别" prop="sex">
+          <el-radio-group v-model="updateUserForm.sex">
+            <el-radio label="男">男</el-radio>
+            <el-radio label="女">女</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="入学时间" prop="enterTime">
+          <el-date-picker
+              v-model="updateUserForm.enterTime"
+              type="date"
+              placeholder="请选择入学的时间"
+          />
+        </el-form-item>
+        <el-form-item label="结束时间" prop="finishTime">
+          <el-date-picker
+              v-model="updateUserForm.finishTime"
+              type="date"
+              placeholder="请选择离开学校的时间"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="closeUpdateDialog">取消</el-button>
+          <el-button type="primary" @click="updateForm(ruleForm)">
+            确认
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </el-dialog>
 </template>
 

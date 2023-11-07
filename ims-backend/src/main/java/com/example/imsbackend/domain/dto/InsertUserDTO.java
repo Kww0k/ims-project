@@ -24,19 +24,19 @@ public class InsertUserDTO {
     @NotBlank(message = "密码不能为空")
     @Length(min = 6, max = 18, message = "密码必须在6-18位")
     private String password;
-
+    @NotBlank(message = "地址不能为空")
     private String address;
-
+    @NotBlank(message = "身份码不能为空")
     private String code;
     @Length(max = 18, min = 18, message = "身份证必须是18位")
 //    @Pattern(regexp = "^[1-9]\\d{5}(18|19|20)\\d{2}(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])\\d{3}(\\d|X|x)$", message = "身份证格式错误")
     private String identificationCard;
-
+    @NotBlank(message = "生日不能为空")
     private Date birthday;
-
+    @NotBlank(message = "性别不能为空")
     private String sex;
-
+    @NotBlank(message = "入学时间不能为空")
     private Date enterTime;
-
+    @NotBlank(message = "离开时间不能为空")
     private Date finishTime;
 }
