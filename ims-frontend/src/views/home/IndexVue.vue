@@ -1,6 +1,6 @@
 <script setup>
 
-import {Document, EditPen, House, Location, Notebook, Setting, User, Van} from "@element-plus/icons-vue";
+import {EditPen, House, Notebook, Setting, User, Van} from "@element-plus/icons-vue";
 import router from "@/router";
 </script>
 

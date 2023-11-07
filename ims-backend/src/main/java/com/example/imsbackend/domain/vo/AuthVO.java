@@ -1,6 +1,5 @@
 package com.example.imsbackend.domain.vo;
 
-import com.example.imsbackend.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
