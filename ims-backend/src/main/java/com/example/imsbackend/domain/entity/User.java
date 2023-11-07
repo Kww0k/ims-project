@@ -1,5 +1,7 @@
 package com.example.imsbackend.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -32,10 +34,14 @@ public class User  {
     private Date enterTime;
     private Date finishTime;
 
-    private Date createTime;
+    @TableField(fill = FieldFill.INSERT)
     private Integer createBy;
-    private Date updateTime;
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Integer updateBy;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
     private String delFlag;
 
 }

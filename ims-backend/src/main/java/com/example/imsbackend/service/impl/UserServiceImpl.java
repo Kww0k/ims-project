@@ -14,6 +14,7 @@ import com.example.imsbackend.utils.BeanCopyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -50,6 +51,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Boolean insertUser(InsertUserDTO insertUserDTO) {
         User user = beanCopyUtils.copyBean(insertUserDTO, User.class);
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return baseMapper.insert(user) == 1;
     }
 

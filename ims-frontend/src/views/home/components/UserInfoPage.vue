@@ -156,6 +156,7 @@ const updateForm = async (formEl) => {
   await formEl.validate((valid) => {
     if (valid) {
       request.post('/user/updateUserById', updateUserForm).then(res => {
+        console.log(res)
         if (res.code === 200) {
           ElMessage.success("更新成功")
           closeUpdateDialog()
