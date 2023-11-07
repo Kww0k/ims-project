@@ -10,9 +10,12 @@ const loginForm = reactive({
 })
 
 const login = () => {
-  request.post("/login", loginForm).then(res => {
+  request.post("/login", loginForm, {headers: {"Content-type": 'application/x-www-form-urlencoded'}}).then(res => {
     if (res.code === 200) {
+      sessionStorage.setItem("token", res.data.token)
+      sessionStorage.setItem("userInfo", res.data.authUserInfoVO)
       router.push('/index')
+      ElMessage.success("登陆成功")
     } else
       ElMessage.error(res.message)
   })

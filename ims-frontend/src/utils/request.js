@@ -7,6 +7,12 @@ const request = axios.create({
     timeout: 5000
 })
 
+request.interceptors.request.use(config => {
+    let token = sessionStorage.getItem("token")
+    config.headers["Authorization"] = "Bearer " + token
+    return config
+})
+
 request.interceptors.response.use(res => {
         if (res.status === 200)
             return res.data
