@@ -28,41 +28,6 @@ const tableData = [
     name: 'Tom',
     address: 'No. 189, Grove St, Los Angeles',
   },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
 ]
 </script>
 
@@ -94,19 +59,20 @@ const tableData = [
         </el-button>
       </div>
     </div>
-    <div style="width: 100%; height: 75%">
-        <el-table :data="tableData" border stripe style="width: 100%; height: 100%">
+    <div style="width: 100%; height: 340px">
+        <el-table :data="tableData" border stripe style="width: 100%; height: 100%"
+                  :header-cell-style="{textAlign: 'center',height: '40px'}"
+                  :row-style="{height: '60px'}">
           <el-table-column style="height: 100px;" prop="date" label="Date" width="180" />
           <el-table-column prop="name" label="Name" width="180" />
           <el-table-column prop="address" label="Address" />
         </el-table>
     </div>
     <div style="height: 10%; width: 100%; display: flex; justify-content: center; align-items: center">
-      <el-pagination layout="prev, pager, next" :total="1000" />
+      <el-pagination layout="prev, pager, next" :total="1000"/>
     </div>
   </div>
 </template>
 
 <style scoped>
-
 </style>
