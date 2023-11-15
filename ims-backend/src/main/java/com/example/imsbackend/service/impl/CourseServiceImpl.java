@@ -7,6 +7,7 @@ import com.example.imsbackend.domain.entity.Course;
 import com.example.imsbackend.domain.vo.CoursePage;
 import com.example.imsbackend.domain.vo.CourseVO;
 import com.example.imsbackend.mapper.CourseMapper;
+import com.example.imsbackend.mapper.UserMapper;
 import com.example.imsbackend.service.CourseService;
 import com.example.imsbackend.utils.BeanCopyUtils;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     private final BeanCopyUtils beanCopyUtils;
 
+    private final UserMapper userMapper;
+
     @Override
     public CoursePage listCourse(Integer pageNum, Integer pageSize, String name) {
         Page<Course> page = new Page<>(pageNum, pageSize);
@@ -34,7 +37,13 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         wrapper.like(StringUtils.hasText(name), Course::getName, name);
         page(page, wrapper);
         List<Course> courseList = page.getRecords();
-        List<CourseVO> courseVOS = beanCopyUtils.copyBeanList(courseList, CourseVO.class);
+        List<CourseVO> courseVOS = courseList.stream()
+                .map(course -> {
+                    CourseVO courseVO = beanCopyUtils.copyBean(course, CourseVO.class);
+                    courseVO.setOpenedBy(userMapper.selectById(course.getOpenedBy()).getUsername());
+                    return courseVO;
+                })
+                .toList();
         return new CoursePage(courseVOS, page.getTotal());
     }
 }

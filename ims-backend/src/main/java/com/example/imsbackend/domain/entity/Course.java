@@ -29,6 +29,7 @@ public class Course  {
     private Date startTime;
     private Date endTime;
     private Double credit;
+    private Double period;
     private Integer number;
     private Integer openedBy;
     @TableField(fill = FieldFill.INSERT)

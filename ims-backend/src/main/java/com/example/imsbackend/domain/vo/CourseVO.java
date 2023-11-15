@@ -16,6 +16,8 @@ public class CourseVO {
     private Date startTime;
     private Date endTime;
     private Double credit;
+    private Double period;
     private Integer number;
-    private Integer openedBy;
+
+    private String openedBy;
 }
