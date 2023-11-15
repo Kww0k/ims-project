@@ -23,4 +23,6 @@ public class CourseController {
         return courseService.listCourse(pageNum, pageSize, name);
     }
 
+
+
 }

@@ -46,3 +46,20 @@ create table user_course
     constraint user_course_pk
         unique (user_id, course_id)
 );
+
+create table role
+(
+    id        int auto_increment
+        primary key,
+    role_name varchar(10) null,
+    role      varchar(10) null
+);
+
+create table user_role
+(
+    user_id int null,
+    role_id int null,
+    constraint user_role_pk
+        unique (user_id, role_id)
+);
+
