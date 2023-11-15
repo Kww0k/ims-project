@@ -6,19 +6,28 @@ import com.example.imsbackend.domain.LoginUser;
 import com.example.imsbackend.domain.dto.InsertUserDTO;
 import com.example.imsbackend.domain.dto.UpdateUserDTO;
 import com.example.imsbackend.domain.entity.User;
+import com.example.imsbackend.domain.entity.UserRole;
 import com.example.imsbackend.domain.vo.AuthUserInfoVO;
+import com.example.imsbackend.handler.exception.DeleteStudentException;
+import com.example.imsbackend.handler.exception.InsertStudentException;
 import com.example.imsbackend.handler.exception.UsernamePasswordException;
 import com.example.imsbackend.mapper.UserMapper;
+import com.example.imsbackend.mapper.UserRoleMapper;
 import com.example.imsbackend.service.UserService;
 import com.example.imsbackend.utils.BeanCopyUtils;
+import com.example.imsbackend.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
+
+import static com.example.imsbackend.constants.OtherConstants.STUDENT_ID;
 
 /**
  * (User)表服务实现类
@@ -32,6 +41,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     private final BeanCopyUtils beanCopyUtils;
 
+    private final SecurityUtil securityUtil;
+
+    private final UserRoleMapper userRoleMapper;
+
     @Override
     public List<AuthUserInfoVO> listUser(String username, String address) {
         LambdaQueryWrapper<User> like = new LambdaQueryWrapper<User>()
@@ -39,6 +52,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .like(StringUtils.hasText(address), User::getAddress, address);
         return baseMapper.selectList(like)
                 .stream()
+                .filter(user -> !Objects.equals(user.getId(), securityUtil.getUserId()))
+                .filter(user -> {
+                    LambdaQueryWrapper<UserRole> userRoleLambdaQueryWrapper = new LambdaQueryWrapper<>();
+                    userRoleLambdaQueryWrapper.eq(UserRole::getUserId, user.getId());
+                    UserRole userRole = userRoleMapper.selectOne(userRoleLambdaQueryWrapper);
+                    if (userRole == null)
+                        return false;
+                    return Objects.equals(userRole.getRoleId(), STUDENT_ID);
+                })
                 .map(user -> beanCopyUtils.copyBean(user, AuthUserInfoVO.class))
                 .toList();
     }
@@ -49,10 +71,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Transactional
     public Boolean insertUser(InsertUserDTO insertUserDTO) {
         User user = beanCopyUtils.copyBean(insertUserDTO, User.class);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        return baseMapper.insert(user) == 1;
+        if (baseMapper.insert(user) == 0)
+            throw new InsertStudentException();
+        if (userRoleMapper.insert(new UserRole(user.getId(), STUDENT_ID)) == 0)
+            throw new InsertStudentException();
+        return true;
     }
 
     @Override
@@ -62,8 +89,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Transactional
     public Boolean deleteUserById(Integer id) {
-        return baseMapper.deleteById(id) == 1;
+        if (baseMapper.deleteById(id) == 0)
+            throw new DeleteStudentException();
+        if (userRoleMapper.delete(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId, id)) == 0)
+            throw new DeleteStudentException();
+        return true;
     }
 
     @Override

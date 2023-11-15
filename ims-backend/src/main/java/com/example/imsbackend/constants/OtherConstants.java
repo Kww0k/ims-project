@@ -6,9 +6,11 @@ package com.example.imsbackend.constants;
  */
 public class OtherConstants {
 
-    public static String AUTH_TOKEN = "Authorization";
+    public static final String AUTH_TOKEN = "Authorization";
 
-    public static Integer TOKEN_SITE = 7;
+    public static final Integer TOKEN_SITE = 7;
 
-    public static String JWT_BLACK_LIST = "JWT_BLACK_LIST:";
+    public static final String JWT_BLACK_LIST = "JWT_BLACK_LIST:";
+
+    public static final Integer STUDENT_ID = 3;
 }
